@@ -30,39 +30,50 @@ y = dataset['label']
 # RU: Разделим данные на обучающую и тестовую выборки.
 # EN: Split the data into training and testing sets.
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-# RU: Преобразование текстовых данных в числовые с помощью TfidfVectorizer
+# RU: Настройка TfidfVectorizer
+# EN: Customization TfidfVectorizer
 vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
-# RU: Преобразуем текстовые данные в векторные представления.
+# RU: Преобразуем текстовые данные в векторное представление признаков для каждого слова.
 X_train_tfidf = vectorizer.fit_transform(X_train)
 X_test_tfidf = vectorizer.transform(X_test)
 
 # RU: Создание и обучение модели PassiveAggressiveClassifier
+# EN: Creating and training a model PassiveAggressiveClassifier
 model = PassiveAggressiveClassifier(max_iter=50, random_state=42)
-# Модель начинаем обучатся и настраивать веса.
-# Модель пытается наиболее подходящие веса для каждого признака.
+# RU: Модель начинаем обучатся и настраивать веса.
+# RU: Модель пытается наиболее подходящие веса для каждого признака.
+# EN: The model begins to learn and adjust the weights.
+# EN: The model tries the most appropriate weights for each trait.
 model.fit(X_train_tfidf, y_train)
 
-# Предсказания
+# RU: Предсказания
+# EN: Predictions
 y_pred = model.predict(X_test_tfidf)
-# Проверка точности модели
+# RU: Проверка точности модели
+# EN: Checking the accuracy of the model
 accuracy = accuracy_score(y_test, y_pred)
 print(f'Точность модели: {accuracy * 100:.2f}%')
 
-# Визуализация матрицы ошибок
+# RU: Визуализация матрицы ошибок
+# EN: Visualization of the error matrix
 c_m = confusion_matrix(y_test, y_pred, labels=['FAKE', 'REAL'])
 ConfusionMatrixDisplay(c_m, display_labels=['FAKE', 'REAL']).plot(cmap='viridis')
 plt.title('Матрица ошибок')
 plt.show()
 
-# Графическое представление важности признаков(слов)
+# RU: Графическое представление важности признаков(слов)
+# EN: Graphical representation of the importance of features(words)
 feature_names = vectorizer.get_feature_names_out()
-# Получаем веса(признаки) для каждого слова из нашего текстового признака.
+# RU: Получаем веса(признаки) для каждого слова из нашего текстового признака.
+# EN: Get weights(attributes) for each word from our text attribute.
 coefs = model.coef_[0]
-# Сортируем веса по возрастанию и берем первые 10 индексов.
+# RU: Сортируем веса по возрастанию и берем первые 10 индексов.
+# EN: Sort the weights in ascending order and take the first 10 indices.
 indices = np.argsort(coefs)[-10:]
 plt.figure(figsize=(10, 6))
 
-# В цикле мы получаем каждое слово, Ось y. coefs[indices] - получаем веса для текущего слова, Ось -x.
+# RU: В цикле мы получаем каждое слово, Ось y. coefs[indices] - получаем веса для текущего слова, Ось -x.
+# EN: In the loop we get each word, y-axis. coefs[indices] - get weights for the current word, Axis -x.
 plt.barh([feature_names[i] for i in indices], coefs[indices], color='blue')
 plt.title('Топ 10 слов с наибольшим вкладом в модель')
 plt.xlabel('Важность каждого слова')
