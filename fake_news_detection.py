@@ -40,9 +40,9 @@ X_test_tfidf = vectorizer.transform(X_test)
 # EN: Creating and training a model PassiveAggressiveClassifier
 model = PassiveAggressiveClassifier(max_iter=50, random_state=42)
 # RU: Модель начинаем обучатся и настраивать веса.
-# RU: Модель пытается наиболее подходящие веса для каждого признака.
+# RU: Модель пытается подобрать наиболее подходящие веса для каждого признака.
 # EN: The model begins to learn and adjust the weights.
-# EN: The model tries the most appropriate weights for each trait.
+# EN: The model tries to find the most appropriate weights for each trait.
 model.fit(X_train_tfidf, y_train)
 
 # RU: Предсказания
