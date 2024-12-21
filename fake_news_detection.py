@@ -6,7 +6,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import PassiveAggressiveClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
-
 # Наши данные / Our dataset
 dataset = pd.read_csv('data/fake_news.csv')
 
@@ -29,7 +28,7 @@ y = dataset['label']
 
 # RU: Разделим данные на обучающую и тестовую выборки.
 # EN: Split the data into training and testing sets.
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=33)
 # RU: Настройка TfidfVectorizer
 # EN: Customization TfidfVectorizer
 vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
